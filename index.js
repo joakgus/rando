@@ -8,7 +8,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Put all API endpoints under '/api'
-app.get('/api/passwords', (req, res) => {
+/*app.get('/api/passwords', (req, res) => {
   const count = 5;
 
   // Generate some passwords
@@ -20,7 +20,7 @@ app.get('/api/passwords', (req, res) => {
   res.json(passwords);
 
   console.log(`Sent ${count} passwords`);
-});
+});*/
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.

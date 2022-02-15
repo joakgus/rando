@@ -15,6 +15,7 @@ class UserSignUp extends Component{
             password:''
         }
 
+
         this.changeFirstNameHandler=this.changeFirstNameHandler.bind(this);
         this.changeLastNameHandler=this.changeLastNameHandler.bind(this);
         this.changePersonalNumberHandler=this.changePersonalNumberHandler.bind(this);
