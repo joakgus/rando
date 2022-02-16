@@ -1,5 +1,4 @@
 module.exports = {
-    development: {
         secretKey: process.env.SECRET_KEY,
         db: {
             dialect: 'postgres',
@@ -21,10 +20,4 @@ module.exports = {
                 idle: 10000
             }
         }
-    },
-    production:{
-        use_env_variable: DATABASE_URL,
-        dialect: 'postgres',
-        operatorsAliases: false
-    }
 }
