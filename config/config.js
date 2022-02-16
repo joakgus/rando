@@ -1,5 +1,5 @@
 module.exports = {
-        secretKey: process.env.SECRET_KEY,
+        secretKey: process.env.SECRET_KEY||"jwor9334bg5",
         db: {
             dialect: 'postgres',
             host: process.env.DB_HOST,
