@@ -3,7 +3,9 @@ const Sequelize = require("sequelize");
 require('dotenv').config();
 var sequelize = "";
 if(process.env.DATABASE_URL) {
-    sequelize = new Sequelize(process.env.DATABASE_URL);
+
+    sequelize = new Sequelize(process.env.DATABASE_URL + "?ssl=true");
+
 }
 else{
     sequelize = new Sequelize(
