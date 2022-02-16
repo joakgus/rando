@@ -18,7 +18,14 @@ require('./routes/AuthRoutes')(app);
 require('./routes/UserRoutes')(app);
 
 const db = require("./model/index");
-db.sequelize.sync();
+db.sequelize.authenticate()
+    .then(() => {
+      console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+      console.error('Unable to connect to the database:', err);
+    });
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
