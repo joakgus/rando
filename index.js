@@ -1,29 +1,24 @@
 const express = require('express');
 const path = require('path');
-const generatePassword = require('password-generator');
+require('dotenv').config();
+const cors = require("cors");
+var corsOptions = {
+  origin: "http://localhost:3000"
+};
 
 const app = express();
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
-// Put all API endpoints under '/api'
-/*app.get('/api/passwords', (req, res) => {
-  const count = 5;
+require('./routes/AuthRoutes')(app);
+require('./routes/UserRoutes')(app);
 
-  // Generate some passwords
-  const passwords = Array.from(Array(count).keys()).map(i =>
-    generatePassword(12, false)
-  )
-
-  // Return them as json
-  res.json(passwords);
-
-  console.log(`Sent ${count} passwords`);
-});*/
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
+const db = require("./model/index");
+db.sequelize.sync();
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
@@ -31,4 +26,4 @@ app.get('*', (req, res) => {
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-console.log(`Password generator listening on ${port}`);
+console.log(`Server listening on ${port}`);

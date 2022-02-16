@@ -1,22 +1,30 @@
 
+import axios from "axios";
 
-class UserGetter{
+const API_URL = "http://localhost:5000/api/auth/";
 
-
-    user = {
-            email: null,
-            firstName: null,
-            lastName: null,
-            personalNumber: null
-        };
-
-    getUser(username, password) {
-        fetch(this.User).then(this.user = this.User);
-        return this.user;
+class UserGetter {
+    login(username, password) {
+        return axios
+            .post(API_URL + "signin", {
+                username,
+                password
+            })
+            .then(response => {
+                if (response.data.accessToken) {
+                    localStorage.setItem("user", JSON.stringify(response.data));
+                }
+                console.log(response.data);
+                return response.data;
+            });
     }
 
-    User = {email:"test@test.com", firstName:"John", lastName:"Doe", personalNumber:1234567890}
+    logout() {
+        localStorage.removeItem("user");
+    }
+    getCurrentUser() {
+        return JSON.parse(localStorage.getItem('user'));;
+    }
 }
-const UGetter = new UserGetter();
 
-export default UGetter;
+export default new UserGetter();

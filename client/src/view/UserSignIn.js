@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import {UserGetter} from "../model/UserGetter";
+import UserGetter from "../model/UserGetter";
 
 class UserSignIn extends Component {
 
@@ -9,18 +9,18 @@ class UserSignIn extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            email:'',
+            username:'',
             password:''
         }
-
-        this.changeEmailHandler=this.changeEmailHandler.bind(this);
+        this.changePasswordHandler=this.changePasswordHandler.bind(this);
+        this.changeUsernameHandler=this.changeUsernameHandler.bind(this);
         this.login = this.login.bind(this);
     }
 
     //return metadata from target input fields and their values
 
-    changeEmailHandler =(event)=>{
-        this.setState({email: event.target.value})
+    changeUsernameHandler =(event)=>{
+        this.setState({username: event.target.value})
     }
 
     changePasswordHandler =(event)=> {
@@ -28,11 +28,16 @@ class UserSignIn extends Component {
     }
 
     //save the input values
-    login=(e)=>{
+    login(e){
         e.preventDefault();
 
-        this.setState(this.props.userModel.getUser(this.state.email, this.state.password))
-
+        UserGetter.login(this.state.username, this.state.password).then(
+            () => {
+                alert("success" + localStorage.getItem("user"));
+                /*this.props.history.push("/profile");
+                window.location.reload();*/
+            }
+            );
         //let user ={email: this.state.email, password: this.state.password};
         //console.log('User=>' + JSON.stringify(user));
     }
@@ -40,26 +45,25 @@ class UserSignIn extends Component {
 
     //return react elements to the browser
     render(){
-        if (this.props.userModel.user.personalNumber == null) {
             return (
                 <div>
                     <div className="container">
                         <div className="row">
                             <br></br>
-                            <h1 className="text-center">User Sign In {this.props.userModel.user.firstName}</h1>
+                            <h1 className="text-center">User Sign In</h1>
                             <br></br>
                             <div className=" card col-md-6 offset-md-3">
                                 <div className="card-body">
                                     <form onSubmit={this.login}>
 
                                         <div className="form-group">
-                                            <label>email</label>
-                                            <input placeholder="Email" name="email" className="form-control"
-                                                   value={this.state.email} onChange={this.changeEmailHandler}/>
+                                            <label>Username</label>
+                                            <input placeholder="Username" name="text" className="form-control"
+                                                   value={this.state.username} onChange={this.changeUsernameHandler}/>
                                         </div>
                                         <div className="form-group">
-                                            <label>password</label>
-                                            <input placeholder="password" name="password" className="form-control"
+                                            <label>Password</label>
+                                            <input placeholder="Password" name="password" className="form-control"
                                                    value={this.state.password} onChange={this.changePasswordHandler}/>
                                         </div>
                                         <br></br>
@@ -74,11 +78,6 @@ class UserSignIn extends Component {
                 </div>
             )
         }
-        else
-        {
-            return(<p>hi</p>)
-        }
     }
-}
 
 export default UserSignIn;

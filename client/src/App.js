@@ -1,33 +1,49 @@
 import './App.css';
 import React, {Component} from "react";
-import {BrowserRouter, Link, Route, Routes} from "react-router-dom"
+import {Link, Route, Routes} from "react-router-dom"
 import UserSignUp from "./view/UserSignUp";
 import UserSignIn from "./view/UserSignIn";
-import UGetter from "./model/UserGetter";
+import Welcome from "./view/Welcome";
+import UserGetter from "./model/UserGetter";
 
-class App extends React.Component{
+class App extends Component{
   constructor(props) {
     super(props);
     this.state =
         {
-
+          currentUser: undefined
         }
     ;
   }
+
+  componentDidMount() {
+    const user = UserGetter.getCurrentUser();
+    if (user) {
+      this.setState({
+        currentUser: user
+      });
+    }
+  }
+  logOut() {
+    UserGetter.logout();
+  }
+
   render () {
+    const {currentUser} = this.state;
     return(
         <div>
-          <BrowserRouter>
-            <button>
-              <Link to="/signup">Sign Up</Link>
-            </button>
-            <button>
-              <Link to="/signin">Sign In</Link>
-            </button>
+              <nav>
+                <button>
+                  <Link to="/signup">Sign Up</Link>
+                </button>
+                <button>
+                  <Link to="/signin">Sign In</Link>
+                </button>
+              </nav>
             <Routes>
               <Route
                   path="/"
-                  element={<UserSignUp/>}
+                  element={<Welcome/>}
               />
               <Route
                   path="/signup"
@@ -35,10 +51,9 @@ class App extends React.Component{
               />
               <Route
                   path="/signin"
-                  element={<UserSignIn userModel = {UGetter}/>}
+                  element={<UserSignIn/>}
               />
             </Routes>
-          </BrowserRouter>
         </div>
     );
   }
