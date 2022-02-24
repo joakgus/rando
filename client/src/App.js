@@ -26,6 +26,7 @@ class App extends Component{
   }
   logOut() {
     UserGetter.logout();
+
   }
 
   render () {
@@ -38,6 +39,9 @@ class App extends Component{
                 </button>
                 <button>
                   <Link to="/signin">Sign In</Link>
+                </button>
+                <button onClick={this.logOut}>
+                  Logout
                 </button>
               </nav>
             <Routes>

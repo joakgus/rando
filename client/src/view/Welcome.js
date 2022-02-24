@@ -8,26 +8,46 @@ export default class Welcome extends Component {
         };
     }
     componentDidMount() {
-        UserService.getPublicContent().then(
-            response => {
-                this.setState({
-                    content: response.data
-                });
-            },
-            error => {
-                this.setState({
-                    content:
-                        (error.response && error.response.data) ||
-                        error.message ||
-                        error.toString()
-                });
-            }
-        );
+        if (localStorage.user === undefined){
+            console.log("lie");
+            UserService.getPublicContent().then(
+                response => {
+                    this.setState({
+                        content: response.data
+                    });
+                },
+                error => {
+                    this.setState({
+                        content:
+                            (error.response && error.response.data) ||
+                            error.message ||
+                            error.toString()
+                    });
+                }
+            );
+        }
+        else {
+            UserService.getUserContent().then(
+                response => {
+                    this.setState({
+                        content:response.data
+                    });
+                },
+                error => {
+                    this.setState({
+                        content:
+                            (error.response && error.response.data) ||
+                            error.message ||
+                            error.toString()
+                    });
+                }
+            );
+        }
     }
     render() {
         return (
-            <div className="container">
-                <header className="jumbotron">
+            <div >
+                <header>
                     <h3>{this.state.content}</h3>
                 </header>
             </div>
