@@ -31,6 +31,7 @@ exports.signin = (req, res) => {
                     id: user.person_id,
                     username: user.username,
                     email: user.email,
+                    role: user.role_id,
                     accessToken: token
             });
         })
