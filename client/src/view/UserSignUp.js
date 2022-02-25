@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 
+
 class UserSignUp extends Component{
 
     //Add constructor to be able to use states in the application
@@ -49,7 +50,27 @@ class UserSignUp extends Component{
     saveUser=(e)=>{
         e.preventDefault();
         let user ={firstName: this.state.firstName,lastName:this.state.lastName,personalNumber:this.state.personalNumber, email: this.state.email, password: this.state.password};
-        this.props.createUser(user)
+        //this.props.createUser(user);
+        //Store the user in the database
+        // eccrypt password and save in the databasse
+        fetch('http://localhost:5000/api/auth/signup',{
+        //fetch('/api/auth/signup', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success user signup userId:', data.userId);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        let encryptedPass = '';
+        user.password = encryptedPass;
         console.log('User=>' + JSON.stringify(user));
     }
 

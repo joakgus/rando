@@ -34,6 +34,7 @@ class UserSignIn extends Component {
         UserGetter.login(this.state.username, this.state.password).then(
             () => {
                 alert("success" + localStorage.getItem("user"));
+                //Store the user info in the database
                 /*this.props.history.push("/profile");
                 window.location.reload();*/
             }

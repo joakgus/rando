@@ -15,6 +15,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+
+
 require('./routes/AuthRoutes')(app);
 require('./routes/UserRoutes')(app);
 
