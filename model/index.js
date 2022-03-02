@@ -1,4 +1,3 @@
-const config = require("../config/config");
 const Sequelize = require("sequelize");
 require('dotenv').config();
 var sequelize = "";
@@ -9,19 +8,23 @@ if(process.env.DATABASE_URL) {
 }
 else{
     sequelize = new Sequelize(
-        config.db.database,
-        config.db.username,
-        config.db.password,
+        process.env.DB_DATA,
+        process.env.DB_USER,
+        process.env.DB_PASS,
         {
-            host: config.db.host,
-            dialect: config.db.dialect,
-            dialectOptions: config.db.dialectOptions,
-            operatorsAliases: false,
+            host: process.env.DB_NAME,
+            dialect: 'postgres',
+            dialectOptions: {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized: false
+                }
+            },
             pool: {
-                max: config.db.pool.max,
-                min: config.db.pool.min,
-                acquire: config.db.pool.acquire,
-                idle: config.db.pool.idle
+                max: 5,
+                min: 0,
+                acquire: 30000,
+                idle: 10000
             }
         }
     );

@@ -1,7 +1,7 @@
 
 import axios from "axios";
 
-const API_URL =  /*"http://localhost:5000/api/auth/"*/"https://protected-wildwood-15719.herokuapp.com/api/auth/";
+const API_URL =  "http://localhost:5000/api/auth/"//"https://protected-wildwood-15719.herokuapp.com/api/auth/";
 
 class UserGetter {
     login(username, password) {
