@@ -1,7 +1,7 @@
 
 import axios from "axios";
 
-const API_URL = "https://protected-wildwood-15719.herokuapp.com/api/auth/";
+const API_URL =  /*"http://localhost:5000/api/auth/"*/"https://protected-wildwood-15719.herokuapp.com/api/auth/";
 
 class UserGetter {
     login(username, password) {
@@ -15,7 +15,7 @@ class UserGetter {
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
                 console.log(response.data);
-                return response.data;
+                return response;
             });
     }
 
@@ -23,7 +23,7 @@ class UserGetter {
         localStorage.removeItem("user");
     }
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));;
+        return JSON.parse(localStorage.getItem('user'));
     }
 }
 

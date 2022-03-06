@@ -10,7 +10,8 @@ class UserSignIn extends Component {
         super(props)
         this.state = {
             username:'',
-            password:''
+            password:'',
+            errormessage:undefined
         }
         this.changePasswordHandler=this.changePasswordHandler.bind(this);
         this.changeUsernameHandler=this.changeUsernameHandler.bind(this);
@@ -32,13 +33,14 @@ class UserSignIn extends Component {
         e.preventDefault();
 
         UserGetter.login(this.state.username, this.state.password).then(
-            () => {
+            resp => {
                 alert("success" + localStorage.getItem("user"));
                 //Store the user info in the database
+
                 /*this.props.history.push("/profile");
                 window.location.reload();*/
             }
-            );
+            ).catch(reason => {console.log(reason.response.data); alert(JSON.stringify(reason.response.data.message));});
         //let user ={email: this.state.email, password: this.state.password};
         //console.log('User=>' + JSON.stringify(user));
     }
