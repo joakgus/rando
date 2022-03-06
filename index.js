@@ -17,13 +17,13 @@ app.use(express.urlencoded({extended:true}));
 
 
 
-require('./routes/AuthRoutes')(app);
-require('./routes/UserRoutes')(app);
+require('./server/routes/AuthRoutes')(app);
+require('./server/routes/UserRoutes')(app);
 
-const db = require("./model/index");
+const db = require("./server/model/index");
 db.sequelize.authenticate()
     .then(() => {
-      console.log('Connection has been established successfully.');
+      console.log('Connection to DB has been established successfully.');
     })
     .catch(err => {
       console.error('Unable to connect to the database:', err);
@@ -31,6 +31,7 @@ db.sequelize.authenticate()
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  
 });
 
 const port = process.env.PORT || 5000;

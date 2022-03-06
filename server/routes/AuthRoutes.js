@@ -15,5 +15,6 @@ module.exports = function(app) {
 
 
 
-    app.get("/test", controller.signUp);
+    app.get("/api/user/:userId/updatePass", controller.encryptedPass);
+
 };

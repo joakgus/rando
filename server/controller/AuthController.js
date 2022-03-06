@@ -10,6 +10,8 @@ const { urlencoded } = require('express');
 
 const router = express.Router()
 
+
+
 // middleware that is specific to this router
 router.use((req, res, next) => {
   //console.log('Time: ', Date.now())
@@ -31,6 +33,7 @@ router.get('/signin', (req, res) => {
 module.exports = {
     signin: signin,
     signUp: signup,
+    encryptedPass: encryptedPass
 };
 
 async function signup(req, res, next){
@@ -91,6 +94,25 @@ function signin(req, res){
 
 async function createANewUser(user, data ){
     // Create a new user
-        const newUser = await user.create(data);
-        console.log("User's auto-generated ID:", newUser.person_id);
+    const newUser = await user.create(data);
+    console.log("User's auto-generated ID:", newUser.person_id);
+}
+
+// We are assuming that the password is not encrypted,
+// we are retrieving the userId parameter to get user password and encrypt it
+async function encryptedPass(req, res, next){
+    let person_id = req.params.userId;
+    let user = await User.findOne({
+        where: {
+            person_id: person_id
+        }
+
+    });
+
+    let unencryptedPass = user.password;
+    const encryptedPass = bcrypt.hashSync(unencryptedPass);
+// userId that
+    user = await user.update({password: encryptedPass});
+    console.log('User new pass: ' +  user.password);
+    next();
 }
