@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import UserService from "../model/UserService";
 export default class Welcome extends Component {
+
+
     constructor(props) {
         super(props);
         this.state = {
             content: ""
+
         };
     }
     componentDidMount() {
@@ -45,12 +48,16 @@ export default class Welcome extends Component {
         }
     }
     render() {
+        console.log(this.state.content);
         return (
             <div >
                 <header>
-                    <h3>{this.state.content}</h3>
+                    <h3>{this.state.content.username}</h3>
+                    <h2>Welcome {JSON.parse(localStorage.getItem('user')).username}</h2>
                 </header>
+              
             </div>
+          
         );
     }
 }

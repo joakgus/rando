@@ -1,10 +1,15 @@
 import React, { Component } from "react"
 import UserGetter from "../model/UserGetter";
+import {useNavigate, withRouter} from "react-router-dom";
 
 class UserSignIn extends Component {
 
     //Add constructor to be able to use states in the application
     //Define properties to be used
+    
+    
+
+
 
     constructor(props) {
         super(props)
@@ -16,6 +21,7 @@ class UserSignIn extends Component {
         this.changePasswordHandler=this.changePasswordHandler.bind(this);
         this.changeUsernameHandler=this.changeUsernameHandler.bind(this);
         this.login = this.login.bind(this);
+       
     }
 
     //return metadata from target input fields and their values
@@ -31,14 +37,10 @@ class UserSignIn extends Component {
     //save the input values
     login(e){
         e.preventDefault();
-
+     
         UserGetter.login(this.state.username, this.state.password).then(
             resp => {
-                alert("success" + localStorage.getItem("user"));
-                //Store the user info in the database
-
-                /*this.props.history.push("/profile");
-                window.location.reload();*/
+                this.props.navigate('/'); // redirect to the welcome page
             }
             ).catch(reason => {console.log(reason.response.data); alert(JSON.stringify(reason.response.data.message));});
         //let user ={email: this.state.email, password: this.state.password};
@@ -81,6 +83,15 @@ class UserSignIn extends Component {
                 </div>
             )
         }
-    }
+}
 
-export default UserSignIn;
+
+
+//used this because its not possible to use 'useNavigate' in the class component
+
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return <UserSignIn {...props} navigate={navigate} />
+}
+
+export default WithNavigate
