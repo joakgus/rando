@@ -1,13 +1,10 @@
-/*
+
 const express = require('express')
-const db = require("../model");
 const config = require("../config/config");
-const User = db.user;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { user } = require('../model');
 const { urlencoded } = require('express');
-*/
 const db = require("../model");
 const User = db.user;
 require('dotenv').config();
@@ -84,7 +81,7 @@ function signin(req, res){
             var token = jwt.sign({ id: user.person_id }, process.env.SECRET_KEY, {
                 expiresIn: 86400 // 24 hours
             });
-            
+
             res.status(200).send({
                     id: user.person_id,
                     username: user.username,
@@ -96,7 +93,7 @@ function signin(req, res){
         .catch(err => {
             res.status(500).send({ message: err.message });
         });
-    
+
 
 }
 
