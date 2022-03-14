@@ -12,7 +12,6 @@ export default class Welcome extends Component {
     }
     componentDidMount() {
         if (localStorage.user === undefined){
-            console.log("lie");
             UserService.getPublicContent().then(
                 response => {
                     this.setState({
@@ -48,16 +47,25 @@ export default class Welcome extends Component {
         }
     }
     render() {
+        let page = null
         console.log(this.state.content);
+        if (this.state.content.username !== undefined)
+        {
+            page =<header>
+                <h3>{this.state.content.username}</h3>
+                <h2>Welcome {JSON.parse(localStorage.getItem('user')).username}</h2>
+            </header>
+        }
+        else
+        {
+           page = <h3>{this.state.content}</h3>
+        }
+
         return (
             <div >
-                <header>
-                    <h3>{this.state.content.username}</h3>
-                    <h2>Welcome {JSON.parse(localStorage.getItem('user')).username}</h2>
-                </header>
-              
+                {page}
             </div>
-          
+
         );
     }
 }
