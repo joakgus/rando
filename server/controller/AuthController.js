@@ -1,13 +1,10 @@
-/*
+
 const express = require('express')
-const db = require("../model");
 const config = require("../config/config");
-const User = db.user;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { user } = require('../model');
 const { urlencoded } = require('express');
-*/
 const db = require("../model");
 const User = db.user;
 require('dotenv').config();
@@ -15,30 +12,6 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 
-/*
-const router = express.Router()
-
-
-
-// middleware that is specific to this router
-router.use((req, res, next) => {
-  //console.log('Time: ', Date.now())
-  next()
-})
-
-
-// define the home page route
-router.get('/createUser', (req, res) => {
-  res.send('Create user');
-})
-
-// define the about route
-router.get('/signin', (req, res) => {
-
-  res.send('signin')
-})
-
-*/
 
 module.exports = {
     signin: signin,
@@ -86,7 +59,7 @@ function signin(req, res){
             var token = jwt.sign({ id: user.person_id }, process.env.SECRET_KEY || "jwor9334bg5", {
                 expiresIn: 86400 // 24 hours
             });
-            
+
             res.status(200).send({
                 id: user.person_id,
                 username: user.username,
@@ -98,7 +71,7 @@ function signin(req, res){
         .catch(err => {
             res.status(500).send({ message: err.message });
         });
-    
+
 
 }
 
