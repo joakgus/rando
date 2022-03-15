@@ -15,6 +15,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 
+/*
 const router = express.Router()
 
 
@@ -37,6 +38,8 @@ router.get('/signin', (req, res) => {
   res.send('signin')
 })
 
+*/
+
 module.exports = {
     signin: signin,
     signUp: signup,
@@ -53,16 +56,15 @@ async function signup(req, res, next){
     console.log(hash);
 
     //Mapping form values to the database columns
-    const userData = {surname: data.lastname , email: data.email, password: hash, name: data.firstname, pnr:data.personalNumber };
-    await createANewUser(user, userData)
-    next();
-
+    const userData = {surname:data.lastName , username: data.username, email: data.email, password: hash, name: data.firstname, pnr:data.personalNumber,role_id:2 };
+    let newUser =    await createANewUser(User, userData);
+    res.send(newUser);
 
 }
 
 
 function signin(req, res){
-    User.findOne({
+      User.findOne({
             where: {
                 username: req.body.username
             }
@@ -81,17 +83,17 @@ function signin(req, res){
                     message: "Invalid Password!"
                 });
             }
-            var token = jwt.sign({ id: user.person_id }, process.env.SECRET_KEY, {
+            var token = jwt.sign({ id: user.person_id }, process.env.SECRET_KEY || "jwor9334bg5", {
                 expiresIn: 86400 // 24 hours
             });
             
             res.status(200).send({
-                    id: user.person_id,
-                    username: user.username,
-                    email: user.email,
-                    role: user.role_id,
-                    accessToken: token
-            });
+                id: user.person_id,
+                username: user.username,
+                email: user.email,
+                role: user.role_id,
+                accessToken: token
+        });
         })
         .catch(err => {
             res.status(500).send({ message: err.message });
@@ -103,9 +105,11 @@ function signin(req, res){
 
 
 async function createANewUser(user, data ){
-    // Create a new user
+    // Create a new user    
+    console.log(data) ;
     const newUser = await user.create(data);
     console.log("User's auto-generated ID:", newUser.person_id);
+    return newUser;
 }
 
 // We are assuming that the password is not encrypted,

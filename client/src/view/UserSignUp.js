@@ -1,5 +1,8 @@
 import React, { Component } from "react"
+import  axios  from 'axios';
 
+import { API_URL } from './../shared/constants';
+import { useNavigate } from 'react-router-dom';
 
 class UserSignUp extends Component{
 
@@ -11,6 +14,7 @@ class UserSignUp extends Component{
         this.state={
             firstName:'',
             lastName:'',
+            userName:'',
             personalNumber:'',
             email:'',
             password:''
@@ -19,11 +23,15 @@ class UserSignUp extends Component{
 
         this.changeFirstNameHandler=this.changeFirstNameHandler.bind(this);
         this.changeLastNameHandler=this.changeLastNameHandler.bind(this);
+        this.changeUserNameHandler=this.changeUserNameHandler.bind(this);
         this.changePersonalNumberHandler=this.changePersonalNumberHandler.bind(this);
         this.changeEmailHandler=this.changeEmailHandler.bind(this);
         this.changePasswordHandler=this.changePasswordHandler.bind(this);
         this.saveUser = this.saveUser.bind(this);
     }
+
+
+    
 
     //return metadata from target input fields and their values
     changeFirstNameHandler=(event)=>{
@@ -33,7 +41,9 @@ class UserSignUp extends Component{
     changeLastNameHandler=(event)=>{
         this.setState({lastName: event.target.value})
     }
-
+    changeUserNameHandler=(event)=>{
+        this.setState({userName: event.target.value})
+    }
     changePersonalNumberHandler=(event)=>{
         this.setState({personalNumber: event.target.value})
     }
@@ -49,29 +59,32 @@ class UserSignUp extends Component{
     //save the input values
     saveUser=(e)=>{
         e.preventDefault();
-        let user ={firstName: this.state.firstName,lastName:this.state.lastName,personalNumber:this.state.personalNumber, email: this.state.email, password: this.state.password};
+        let user ={firstname: this.state.firstName,lastName:this.state.lastName,username:this.state.userName,
+            personalNumber:this.state.personalNumber, email: this.state.email, password: this.state.password};
         //this.props.createUser(user);
         //Store the user in the database
         // eccrypt password and save in the databasse
-        fetch('http://localhost:5000/api/auth/signup',{
-        //fetch('/api/auth/signup', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user),
-            })
-            .then(response => response.json())
+
+      /*   let encryptedPass = '';
+        user.password = encryptedPass;
+        console.log('User=>' + JSON.stringify(user)); */
+
+        const  options = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+          }; 
+        
+        
+        axios.post(API_URL+ "signup", user, options)
             .then(data => {
                 console.log('Success user signup userId:', data.userId);
+                this.props.navigate('/signin'); // redirect to the welcome page
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
 
-        let encryptedPass = '';
-        user.password = encryptedPass;
-        console.log('User=>' + JSON.stringify(user));
     }
 
 
@@ -92,36 +105,41 @@ class UserSignUp extends Component{
                                 <div className="card-body">
                                     <div className="form-group">
                                         <label>first Name</label>
-                                        <input placeholder="First Name" name="firstName" className="form-control"
+                                        <input placeholder="" name="firstName" className="form-control"
                                         value={this.state.firstName} onChange={this.changeFirstNameHandler}/>
                                     </div>
                                     <div className="form-group">
                                         <label>last Name</label>
-                                        <input placeholder="Last Name" name="lastName" className="form-control"
+                                        <input placeholder="" name="lastName" className="form-control"
                                         value={this.state.lastName} onChange={this.changeLastNameHandler}/>
                                     </div>
 
                                     <div className="form-group">
+                                        <label>username</label>
+                                        <input placeholder="" name="username" className="form-control"
+                                        value={this.state.userName} onChange={this.changeUserNameHandler}/>
+                                    </div>
+                                    <div className="form-group">
                                         <label>personal Number</label>
-                                        <input placeholder="Personal Number" name="number" className="form-control"
+                                        <input placeholder="" name="number" className="form-control"
                                         value={this.state.personalNumber} onChange={this.changePersonalNumberHandler}/>
                                     </div>
 
                                     <div className="form-group">
                                         <label>email</label>
-                                        <input placeholder="Email" name="email" className="form-control"
+                                        <input placeholder="" name="email" className="form-control"
                                         value={this.state.email} onChange={this.changeEmailHandler}/>
                                     </div>
                                     <div className="form-group">
                                         <label>password</label>
-                                        <input placeholder="Password" name="password" className="form-control"
+                                        <input placeholder="" name="password" className="form-control" type="password"
                                                value={this.state.password} onChange={this.changePasswordHandler}/>
 
                                     </div>
                                     <br></br>
                                     <br></br>
 
-                                    <input type="submit" value="Submit"/>
+                                    <input className="btn btn-primary" type="submit" value="Submit"/>
 
                                 </div>
                             </div>
@@ -133,4 +151,16 @@ class UserSignUp extends Component{
     }
 }
 
-export default UserSignUp;
+UserSignUp.defaultProps = {
+    titl2: ""
+}
+
+//export default UserSignUp;
+
+
+function WithNavigate(props) {
+    let navigate = useNavigate();
+    return <UserSignUp {...props} navigate={navigate} />
+}
+
+export default WithNavigate

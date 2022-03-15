@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import UserGetter from "../model/UserGetter";
 import {useNavigate, withRouter} from "react-router-dom";
+import { user } from "pg/lib/defaults";
 
 class UserSignIn extends Component {
 
@@ -40,7 +41,7 @@ class UserSignIn extends Component {
      
         UserGetter.login(this.state.username, this.state.password).then(
             resp => {
-                this.props.navigate('/'); // redirect to the welcome page
+                this.props.navigate('/welcome'); // redirect to the welcome page
             }
             ).catch(reason => {console.log(reason.response.data); alert(JSON.stringify(reason.response.data.message));});
         //let user ={email: this.state.email, password: this.state.password};
@@ -63,18 +64,18 @@ class UserSignIn extends Component {
 
                                         <div className="form-group">
                                             <label>Username</label>
-                                            <input placeholder="Username" name="text" className="form-control"
+                                            <input placeholder="" name="text" className="form-control"
                                                    value={this.state.username} onChange={this.changeUsernameHandler}/>
                                         </div>
                                         <div className="form-group">
                                             <label>Password</label>
-                                            <input placeholder="Password" name="password" className="form-control"
+                                            <input placeholder="" name="password" className="form-control" type="password"
                                                    value={this.state.password} onChange={this.changePasswordHandler}/>
                                         </div>
                                         <br></br>
                                         <br></br>
 
-                                        <input type="submit" value="Submit"/>
+                                        <input className="btn btn-primary" type="submit" value="Sign in"/>
                                     </form>
                                 </div>
                             </div>

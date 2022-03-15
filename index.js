@@ -3,7 +3,7 @@ const path = require('path');
 require('dotenv').config();
 const cors = require("cors");
 var corsOptions = {
-  origin: ["http://localhost:3000",'https://protected-wildwood-15719.herokuapp.com'],
+  //origin: ["http://localhost:3000",'https://protected-wildwood-15719.herokuapp.com'],
     credentials: true,
 };
 

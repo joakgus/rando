@@ -5,6 +5,7 @@ import UserSignUp from "./view/UserSignUp";
 import UserSignIn from "./view/UserSignIn";
 import Welcome from "./view/Welcome";
 import UserGetter from "./model/UserGetter";
+import AdminPage from './view/AdminPage';
 
 class App extends Component{
   constructor(props) {
@@ -32,7 +33,7 @@ class App extends Component{
   render () {
     const {currentUser} = this.state;
     return(
-        <div>
+        <div className="container">
               <nav>
                 <button>
                   <Link to="/signup">Sign Up</Link>
@@ -41,12 +42,12 @@ class App extends Component{
                   <Link to="/signin">Sign In</Link>
                 </button>
                 <button onClick={this.logOut}>
-                  Logout
+                 <Link to="/signin">Log Out</Link>
                 </button>
               </nav>
             <Routes>
               <Route
-                  path="/"
+                  path="/welcome"
                   element={<Welcome/>}
               />
               <Route
@@ -56,6 +57,10 @@ class App extends Component{
               <Route
                   path="/signin"
                   element={<UserSignIn/>}
+              />
+              <Route
+                  path="/admin"
+                  element={<AdminPage userInfo={currentUser}/>}
               />
             </Routes>
         </div>
